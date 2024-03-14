@@ -1,15 +1,14 @@
 
-
 import java.io.*;
 import java.util.*;
 
 public class Main {
 
     public static int N;
-    public static int cost;
-    public static int MIN;
-    public static int[] road;
-    public static int[] oil;
+    public static long cost;
+    public static long MIN;
+    public static long[] road;
+    public static long[] oil;
 
 
     public static void main(String[] args) throws IOException {
@@ -19,17 +18,17 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
 
-        road = new int[N - 1];
-        oil = new int[N];
+        road = new long[N - 1];
+        oil = new long[N];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < road.length; i++) {
-            road[i] = Integer.parseInt(st.nextToken());
+            road[i] =  Long.parseLong(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < oil.length; i++) {
-            oil[i] = Integer.parseInt(st.nextToken());
+            oil[i] =  Long.parseLong(st.nextToken());
         }
 
         MIN = oil[0];
