@@ -1,72 +1,68 @@
+
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
 
-    public static int M, N, count;
-    public static int[][] maze;
-    public static boolean[][] visited;
-    static int[] xMove = {0, 0, -1, 1};
-    static int[] yMove = {-1, 1, 0, 0};
+    static int N, M;
+    static int[][] maze;
+    static boolean[][] visited;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
 
-    public static void main(String[] args) throws Exception {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String[] split = br.readLine().split(" ");
-        N = Integer.parseInt(split[0]);
-        M = Integer.parseInt(split[1]);
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        visited = new boolean[N][M];
         maze = new int[N][M];
-        count = 0;
+        visited = new boolean[N][M];
+
         for (int i = 0; i < N; i++) {
             String line = br.readLine();
-            char[] charArray = line.toCharArray();
+            char[] charArray = line.toCharArray();  //  String 문자열을 char형 배열로 바꿔준다.
             for (int j = 0; j < M; j++) {
                 maze[i][j] = Integer.parseInt(String.valueOf(charArray[j]));
             }
         }
 
         bfs(0, 0);
-
-        bw.write(maze[N - 1][M - 1] + "\n");
-
-        bw.flush();
-        bw.close();
-        br.close();
+        System.out.println(maze[N - 1][M - 1]);
     }
 
-    private static void bfs(int x, int y) {
-        Queue<spot> queue = new LinkedList<>();
-        queue.add(new spot(x, y));
+    static void bfs(int x, int y) {
+        Queue<point> q = new LinkedList<>();
+        q.add(new point(x, y));
         visited[x][y] = true;
 
-        while (!queue.isEmpty()) {
-            spot start = queue.poll();
+        while (!q.isEmpty()) {
+            point start = q.poll();
             for (int i = 0; i < 4; i++) {
-                int newX = start.x + xMove[i];
-                int newY = start.y + yMove[i];
+                int newX = start.x + dx[i];
+                int newY = start.y + dy[i];
 
                 if (newX >= 0 && newX < N) {
                     if (newY >= 0 && newY < M) {
                         if (maze[newX][newY] != 0 && !visited[newX][newY]) {
-                            queue.add(new spot(newX, newY));
                             maze[newX][newY] = maze[start.x][start.y] + 1;
+                            q.add(new point(newX, newY));
                             visited[newX][newY] = true;
                         }
                     }
                 }
             }
-
         }
     }
 
-    static class spot {
+    static class point {
         int x;
         int y;
 
-        spot(int x, int y) {
+        point(int x, int y) {
             this.x = x;
             this.y = y;
         }
