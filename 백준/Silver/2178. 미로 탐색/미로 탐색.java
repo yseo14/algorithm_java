@@ -26,7 +26,7 @@ public class Main {
             String line = br.readLine();
             char[] charArray = line.toCharArray();  //  String 문자열을 char형 배열로 바꿔준다.
             for (int j = 0; j < M; j++) {
-                maze[i][j] = Integer.parseInt(String.valueOf(charArray[j]));
+                maze[i][j] = Integer.parseInt(String.valueOf(charArray[j]));    //  parseInt는 인자로 문자열이 들어와야하기 때문에 charArr[j]가 바로 들어가면 안되고 문자열로 바꿔준 후 넣어야함
             }
         }
 
