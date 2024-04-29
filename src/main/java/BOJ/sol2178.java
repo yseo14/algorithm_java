@@ -6,6 +6,7 @@ import java.util.*;
 public class sol2178 {
 
     static int N, M;
+
     static int[][] maze;
     static boolean[][] visited;
     static int[] dx = {1, -1, 0, 0};
