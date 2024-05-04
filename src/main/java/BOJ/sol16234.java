@@ -42,7 +42,7 @@ public class sol16234 {
         result = 0;
 
         while (true) {
-            endCheck = false;
+            endCheck = true;
             border = new boolean[n][n];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
@@ -50,12 +50,12 @@ public class sol16234 {
                         bfs(i, j);
                         if (list.size() > 1) {
                             updateLand(sum, cnt);
-                            endCheck = true;
+                            endCheck = false;
                         }
                     }
                 }
             }
-            if (!endCheck) break;
+            if (endCheck) break;
             result++;
         }
 
