@@ -6,10 +6,6 @@ import java.util.*;
 
 public class sol16234 {
 
-    /**
-     * TODO: bfs 돌리는데 현재 칸과 새로 접근하는 칸과의 차이가 l,r 사이면 open을 true로 바꾸고 sum에 값을 더하고, cnt ++
-     */
-
     static int n, l, r;
     static int[][] land;
     static boolean[][] border;
@@ -92,44 +88,10 @@ public class sol16234 {
                 }
             }
 
-//
-//            for (int i = 0; i < n; i++) {
-//                System.out.println();
-//                for (int j = 0; j < n; j++) {
-//                    System.out.print(land[i][j] + " ");
-//                }
-//            }
-//            for (int i = 0; i < n; i++) {
-//                System.out.println();
-//                for (int j = 0; j < n; j++) {
-//                    System.out.print(border[i][j] + " ");
-//                }
-//            }
-//            System.out.println();
-//            System.out.println("sum: " + sum + ", cnt: " + cnt + " result: " + result);
-//            System.out.println("======================");
         }
 
 
-//        System.out.println();
-//        System.out.println("*****************************************");
-//        System.out.println("======================");
-//        for (int i = 0; i < n; i++) {
-//            System.out.println();
-//            for (int j = 0; j < n; j++) {
-//                System.out.print(land[i][j] + " ");
-//            }
-//        }
-//        for (int i = 0; i < n; i++) {
-//            System.out.println();
-//            for (int j = 0; j < n; j++) {
-//                System.out.print(border[i][j] + " ");
-//            }
-//        }
-//        System.out.println();
-//        System.out.println("sum: " + sum + ", cnt: " + cnt + " result: " + result);
-//        System.out.println("======================");
-//        System.out.println("*****************************************");
+
 
     }
 
