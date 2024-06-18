@@ -39,10 +39,7 @@ public class sol9663 {
             }
         }
 
-
     }
-
-
     public static boolean check(int row) {
         for (int i = 1; i < row; i++) {
             if (map[i] == map[row]) return false;
