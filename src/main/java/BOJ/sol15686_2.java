@@ -31,8 +31,7 @@ public class sol15686_2 {
         house = new ArrayList<>();
         chicken = new ArrayList<>();
         choice = new ArrayList<>();
-        
-        visited = new boolean[chicken.size()];
+
 
         for (int i = 1; i < N + 1; i++) {
             st = new StringTokenizer(br.readLine());
@@ -42,6 +41,8 @@ public class sol15686_2 {
                 if (map[i][j] == 2) chicken.add(new Point(i, j));
             }
         }
+        visited = new boolean[chicken.size()];
+        
 
         backtracking(0, 0);
 
