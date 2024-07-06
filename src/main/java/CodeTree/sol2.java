@@ -19,7 +19,7 @@ public class sol2 {
         n = Integer.parseInt(br.readLine());
         a = new int[n];
         for (int i = 0; i < n; i++) {
-            a[i] = Integer.parseInt(br.readLine());
+            a[i] = Integer.parseInt(br.readLine().trim());
         }
         m = Integer.parseInt(br.readLine());
         b = new int[m];
