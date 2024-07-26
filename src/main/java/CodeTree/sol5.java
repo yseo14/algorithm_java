@@ -3,6 +3,9 @@ package CodeTree;
 import java.io.*;
 import java.util.*;
 
+/**
+ * 블럭쌓는 명령
+ */
 public class sol5 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

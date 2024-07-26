@@ -3,6 +3,9 @@ package CodeTree;
 import java.io.*;
 import java.util.*;
 
+/**
+ * 스승의 은혜
+ */
 public class sol4 {
     static class Gift implements Comparable<Gift> {
         int price;
