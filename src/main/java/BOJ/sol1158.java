@@ -10,7 +10,6 @@ public class sol1158 {
     private static int K;
     private static Queue<Integer> q = new LinkedList<>();
 
-
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
