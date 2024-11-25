@@ -50,7 +50,6 @@ public class sol7576_2 {
     public static void bfs() {
         while(!ripe.isEmpty()){
             Point curr = ripe.poll();
-            System.out.println("x: "+curr.x + " y: "+curr.y);
             for (int i = 0; i < 4; i++) {
                 int nx = curr.x + dx[i];
                 int ny = curr.y + dy[i];
