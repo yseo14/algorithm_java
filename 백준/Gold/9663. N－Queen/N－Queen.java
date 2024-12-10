@@ -1,52 +1,39 @@
-
 import java.io.*;
-import java.util.*;
 
 public class Main {
+    static int N;
+    static int answer = 0;
+    static boolean[] isUsed1;
+    static boolean[] isUsed2;   //  우상향 대각선
+    static boolean[] isUsed3;   //  우하향 대각선
 
-    static int n;
-    static int[] map;
-    static int count = 0;
-
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        isUsed1 = new boolean[N];
+        isUsed2 = new boolean[2 * N - 1];
+        isUsed3 = new boolean[2 * N - 1];
 
-        n = Integer.parseInt(br.readLine());
-
-        for (int i = 1; i < n + 1; i ++){
-            map = new int[n + 1];
-            map[1] = i; //  (1,1) 부터 시작
-            dfs(2);
-        }
-
-        System.out.println(count);
-
+        queen(0);
+        System.out.println(answer);
     }
 
-    public static void dfs(int row){
-        if (row > n) {
-            count++;
+    public static void queen(int count) {
+        if (count == N) {
+            answer++;
+            return;
         }
-
-        else{
-            for (int i = 1; i < n + 1; i++) {
-                map[row] = i;   // 현재 check 할 위치. -> queen 을 놓을 자리
-                if(check(row)){
-                    dfs(row + 1);
-                }
+        for (int i = 0; i < N; i++) {
+            if (isUsed1[i] || isUsed2[i + count] || isUsed3[count - i + N - 1]) {
+                continue;
             }
+            isUsed1[i] = true;
+            isUsed2[i + count] = true;
+            isUsed3[count - i + N - 1] = true;
+            queen(count + 1);
+            isUsed1[i] = false;
+            isUsed2[i + count] = false;
+            isUsed3[count - i + N - 1] = false;
         }
-
-
-    }
-
-
-    public static boolean check(int row) {
-        for (int i = 1; i < row; i++) {
-            if (map[i] == map[row]) return false;
-            if (Math.abs(i - row) == Math.abs(map[i] - map[row])) return false;
-        }
-        return true;
     }
 }
