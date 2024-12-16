@@ -1,14 +1,6 @@
-
 import java.io.*;
 import java.util.*;
 
-/**
- * 1. 스티커를 회전시키는 메서드 구현 2. 노트북의 전체 칸을 돌면서 스티커를 붙일 수 있는 지 확인 -> 배열 값의 합이 2인 곳이 있으면 안됨 3. 노트북에 스티커를 붙일 수 있으면 그 값들을 업데이트
- * <p>
- * <p>
- * 회전로직 90: 회전 후 row = 기존 col, 회전 후 col = 기존 row 거꾸로 180: 회전 후 row = 기존 row 거꾸로, 회전 후 col = 기존 col 거꾸로 270: 회전 후 row =
- * 기존 col 거꾸로, 회전 후 col = 기존 row
- */
 public class Main {
     static int N, M, K;
     static int[][] board = new int[40][40]; //  노트북
@@ -52,7 +44,7 @@ public class Main {
                 if (isAttached) {
                     break;
                 }
-                rotate90(sticker);
+                sticker = rotate90(sticker);
             }
         }
         for (int i = 0; i < N; i++) {
@@ -83,22 +75,19 @@ public class Main {
         return true;
     }
 
-    public static void rotate90(int[][] sticker) {
+    public static int[][] rotate90(int[][] sticker) {
 
-        int[][] tmp = new int[10][10];
+        int[][] rotated = new int[10][10];
+
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
-                tmp[i][j] = sticker[i][j];
+                rotated[j][R - 1 - i] = sticker[i][j];
             }
         }
-        for (int i = 0; i < C; i++) {
-            for (int j = 0; j < R; j++) {
-                sticker[i][j] = tmp[R - 1 - j][i];
-            }
-        }
-        int t = R;
-        R = C;
-        C = t;
+        int T = R;
+        R =C;
+        C = T;
+        return rotated;
     }
 }
 
