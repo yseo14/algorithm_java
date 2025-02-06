@@ -60,10 +60,10 @@ public class sol2206 {
                         }
                     }
                 } else {    //  다음 노드가 벽일 때
-                    if (w == 0) { //  아직 벽을 한 번도 부시지 않았다면
+                    if (w == 0) { //  아직 벽을 한 번도 부수지 않았다면
                         if (visited[1][nx][ny] == 0) {  //  처음 방문하는 곳일 경우
-                            q.offer(new int[]{1, nx, ny});  //  벽을 부시고 방문
-                            visited[1][nx][ny] = visited[0][x][y] + 1;  //  이전 노드(벽을 부시지 않고 왔을 때의 배열)까지 거리 + 1
+                            q.offer(new int[]{1, nx, ny});  //  벽을 부수고 방문
+                            visited[1][nx][ny] = visited[0][x][y] + 1;  //  이전 노드(벽을 부수지 않고 왔을 때의 배열)까지 거리 + 1
                             if (nx == n - 1 && ny == m - 1) {   //  목적지 도달시
                                 return visited[1][nx][ny];
                             }
