@@ -27,7 +27,7 @@ public class sol1010 {
         }
         if (n == r || r == 0) { //  nC0 = 1, nCn = 1
             return dp[n][r] = 1;
-        }
+        } 
         return dp[n][r] = factorial(n - 1, r - 1) + factorial(n - 1, r);
     }
 
