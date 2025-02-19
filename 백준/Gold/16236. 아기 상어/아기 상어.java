@@ -4,14 +4,15 @@ import java.util.*;
 public class Main {
     static int n;
     static int[][] map;
-    static int currSize = 2;
-    static Queue<Point> q = new LinkedList<>();
+    static Queue<Point> q;
     static PriorityQueue<Point> pq;
+    static int currSize = 2;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         map = new int[n][n];
 
+        q = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
@@ -44,28 +45,28 @@ public class Main {
     public static void bfs() {
         int[] dx = {0, 0, 1, -1};
         int[] dy = {1, -1, 0, 0};
-        pq = new PriorityQueue<>();
         boolean[][] visited = new boolean[n][n];
+        pq = new PriorityQueue<>();
+
         while (!q.isEmpty()) {
             Point now = q.poll();
             for (int i = 0; i < 4; i++) {
                 int nx = now.x + dx[i];
                 int ny = now.y + dy[i];
-                if (nx < 0 || ny < 0 || nx >= n || ny >= n || map[nx][ny] > currSize || visited[nx][ny]) {
+                if (nx < 0 || ny < 0 || nx >= n || ny >= n || visited[nx][ny] || map[nx][ny] > currSize) {
                     continue;
                 }
                 visited[nx][ny] = true;
                 q.offer(new Point(nx, ny, now.dist + 1));
-                if (map[nx][ny] != 0 && map[nx][ny] < currSize) {
+                if (map[nx][ny] != 0 && currSize > map[nx][ny]) {
                     pq.offer(new Point(nx, ny, now.dist + 1));
                 }
             }
         }
     }
-
     public static class Point implements Comparable<Point> {
-        int x, y;
-        int dist;
+        int x, y, dist;
+
         public Point(int x, int y, int dist) {
             this.x = x;
             this.y = y;
@@ -74,14 +75,14 @@ public class Main {
 
         @Override
         public int compareTo(Point p) {
-            if (this.dist != p.dist) {  //  거리가 다르면
-                return Integer.compare(this.dist, p.dist);  //  거리가 더 가까운 것을 우선순위
-            }else{  //  거리가 같으면
-                if (this.x == p.x) {    // 높이가 같은 곳에 있으면
-                    return Integer.compare(this.y, p.y);    //  더 왼쪽에 있는게 우선순위
-                }else{  //  높이가 다르면
-                    return Integer.compare(this.x, p.x);    //  더 위쪽에 있는게 우선순위
+            if (this.dist == p.dist) {
+                if (this.x == p.x) {
+                    return Integer.compare(this.y, p.y);
+                }else{
+                    return Integer.compare(this.x, p.x);
                 }
+            } else{
+                return Integer.compare(this.dist, p.dist);
             }
         }
     }
