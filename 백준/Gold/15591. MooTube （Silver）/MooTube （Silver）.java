@@ -12,55 +12,67 @@ public class Main {
         q = Integer.parseInt(st.nextToken());
 
         ArrayList<Video>[] graph = new ArrayList[n + 1];
-        for (int i = 0; i < n + 1; i++) {
+        for (int i = 0; i <= n; i++) {
             graph[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < n - 1; i++) {
             st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
             int usado = Integer.parseInt(st.nextToken());
-            graph[start].add(new Video(end, usado));
-            graph[end].add(new Video(start, usado));
+
+            graph[from].add(new Video(to, usado));
+            graph[to].add(new Video(from, usado));
         }
 
         for (int i = 0; i < q; i++) {
             st = new StringTokenizer(br.readLine());
             int k = Integer.parseInt(st.nextToken());
             int start = Integer.parseInt(st.nextToken());
-            System.out.println(bfs(start, k, graph));
+            System.out.println(solution(start, k, graph));
         }
     }
 
-    public static int bfs(int start, int k, ArrayList<Video>[] graph) {
-        Queue<Integer> q = new LinkedList<>();
+    public static int solution(int start, int k, ArrayList<Video>[] graph) {
+        PriorityQueue<Video> pq = new PriorityQueue<>();
         boolean[] visited = new boolean[n + 1];
-        int count = 0;
 
         visited[start] = true;
-        q.add(start);
+        pq.offer(new Video(start, Integer.MAX_VALUE));
+        int count = 0;
 
-        while (!q.isEmpty()) {
-            int curr = q.poll();
-            for (Video next : graph[curr]) {
-                if (!visited[next.num] && next.usado >= k) {
-                    count++;
-                    q.add(next.num);
-                    visited[next.num] = true;
+        while (!pq.isEmpty()) {
+            Video curr = pq.poll();
+
+            for (Video next : graph[curr.num]) {
+                if (visited[next.num]) {
+                    continue;
                 }
+                int minUsado = Math.min(next.usado, curr.usado);
+                if (minUsado >= k) {
+                    count++;
+                    pq.offer(new Video(next.num, minUsado));
+                }
+                visited[next.num] = true;
             }
         }
+
         return count;
     }
 
-    public static class Video {
+    static class Video implements Comparable<Video> {
         int num;
         int usado;
 
         Video(int num, int usado) {
             this.num = num;
             this.usado = usado;
+        }
+
+        @Override
+        public int compareTo(Video video) {
+            return Integer.compare(video.usado, this.usado);
         }
     }
 }
