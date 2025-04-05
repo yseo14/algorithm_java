@@ -30,7 +30,7 @@ public class Main {
             return;
         }
         dfs(materials, idx + 1, materials.get(idx).s * sumS, materials.get(idx).b + sumB, true);
-        dfs(materials, idx + 1,  sumS, sumB, false);
+        dfs(materials, idx + 1,  sumS, sumB, used);
     }
 
     public static class Material {
