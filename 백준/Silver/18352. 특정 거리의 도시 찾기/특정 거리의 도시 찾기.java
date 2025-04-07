@@ -14,7 +14,7 @@ public class Main {
         k = Integer.parseInt(st.nextToken());
         x = Integer.parseInt(st.nextToken());
 
-        ArrayList<City>[] cityList = new ArrayList[n + 1];
+        ArrayList<Integer>[] cityList = new ArrayList[n + 1];
         for (int i = 1; i <= n; i++) {
             cityList[i] = new ArrayList<>();
         }
@@ -23,9 +23,9 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int from = Integer.parseInt(st.nextToken());
             int to = Integer.parseInt(st.nextToken());
-            cityList[from].add(new City(to, 1));
+            cityList[from].add(to);
         }
-        int[] result = dijkstra(x, cityList);
+        int[] result = bfs(x, cityList);
         boolean isExist = false;
         for (int i = 1; i < n + 1; i++) {
             if (result[i] == k) {
@@ -40,41 +40,22 @@ public class Main {
         bw.close();
     }
 
-    public static int[] dijkstra(int start, ArrayList<City>[] cityList) {
-        boolean[] visited = new boolean[n + 1];
+    public static int[] bfs(int start, ArrayList<Integer>[] cityList) {
         int[] dist = new int[n + 1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        PriorityQueue<City> q = new PriorityQueue<>();
+        Arrays.fill(dist, -1);
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
         dist[start] = 0;
-        q.offer(new City(start, 0));
-
         while (!q.isEmpty()) {
-            City curr = q.poll();
-            if (visited[curr.num]) {
-                continue;
-            }
-            visited[curr.num] = true;
-            for (City next : cityList[curr.num]) {
-                if (dist[next.num] > dist[curr.num] + 1) {
-                    dist[next.num] = dist[curr.num] + 1;
-                    q.offer(new City(next.num, dist[next.num]));
+            int curr = q.poll();
+            for (Integer next : cityList[curr]) {
+                if (dist[next] == -1) {
+                    dist[next] = dist[curr] + 1;
+                    q.offer(next);
                 }
             }
         }
+
         return dist;
-    }
-
-    public static class City implements Comparable<City>{
-        int num, cost;
-
-        City(int num, int cost) {
-            this.num = num;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(City city) {
-            return Integer.compare(this.cost, city.cost);
-        }
     }
 }
