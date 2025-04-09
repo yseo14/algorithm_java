@@ -9,54 +9,45 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        w = Integer.parseInt(st.nextToken());
-        l = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());  // 트럭 수
+        w = Integer.parseInt(st.nextToken());  // 다리 길이
+        l = Integer.parseInt(st.nextToken());  // 다리 최대 하중
 
         trucks = new int[n];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
             trucks[i] = Integer.parseInt(st.nextToken());
         }
+
         Queue<Integer> bridge = new LinkedList<>();
-        for (int i = 0; i < w; i++) {   //  다리에 초기 값인 0을 모두 할당
-            bridge.offer(0);
+        for (int i = 0; i < w; i++) {
+            bridge.offer(0);  // 다리 초기화 (길이만큼 0 채움)
         }
 
-        int passedTrucks = 0;
         int time = 0;
-        int nextTruck = 0;  //  건널 차례인 트럭 인덱스
-        int nextTruckWeight = 0;
-        while (true) {
-            if (passedTrucks == n) {
-                break;
-            }
-            int passed = bridge.poll();  //  가장 앞에를 다리 밖으로 이동
-            if (passed != 0) {  //  다리 밖으로 이동 값(트럭)이 0보다 크면, 트럭이 탈출한 것
-                passedTrucks++;
-            }
+        int nextTruck = 0;
+        int bridgeWeight = 0;
 
-            if (nextTruck < n) {   //  모든 트럭이 다리를 건넜거나 건너는 중일 경우
-                nextTruckWeight =trucks[nextTruck];
-            }
-
-            if (l - weightOnBridge(bridge) >= nextTruckWeight) {   //  다리 위 남은 무게가 다음 트럭보다 크면(다음 트럭이 다리에 올라갈 수 있으면)
-                bridge.offer(nextTruckWeight);    //  다음 트럭을 다리 위로 이동
-                nextTruck++;
-            } else { //  다리 위 남은 무게가 다음 트럭보다 작으면(다음 트럭이 올라올 수 없음)
-                bridge.offer(0);
-            }
+        while (nextTruck < n) {
             time++;
+
+            // 트럭 한 칸 이동 (맨 앞 나감)
+            int passed = bridge.poll();
+            bridgeWeight -= passed;
+
+            int nextTruckWeight = trucks[nextTruck];
+            if (bridgeWeight + nextTruckWeight <= l) {
+                bridge.offer(nextTruckWeight);
+                bridgeWeight += nextTruckWeight;
+                nextTruck++;
+            } else {
+                bridge.offer(0);  // 올라가지 못하면 빈 공간
+            }
         }
+
+        // 마지막 트럭이 다리를 완전히 건너는 데 필요한 시간 추가
+        time += w;
 
         System.out.println(time);
-    }
-
-    public static int weightOnBridge(Queue<Integer> bridge) {
-        int sum = 0;
-        for (int weight : bridge) {
-            sum += weight;
-        }
-        return sum;
     }
 }
