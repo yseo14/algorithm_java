@@ -11,7 +11,7 @@ class Solution {
         
         for(int i = 0; i < n; i++) {
             if(!visited[i]){
-                bfs(i, n, computers);
+                dfs(i, n, computers);
                 answer++;
             }
         }
@@ -32,6 +32,15 @@ class Solution {
                     q.offer(i);
                     visited[i] = true;
                 }
+            }
+        }
+    }
+    
+    public static void dfs(int start, int n, int[][] computers) {
+        visited[start] = true;
+        for(int i = 0; i < n; i++) {
+            if(!visited[i] && computers[start][i] == 1) {
+                dfs(i, n, computers);
             }
         }
     }
