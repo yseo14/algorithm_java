@@ -27,7 +27,7 @@ public class Main {
                 resultLeft = left;
                 resultRight = right;
             } else {
-                if (Math.abs(arr[left]) > Math.abs(arr[right])) {
+                if (arr[left] + arr[right] < 0) {
                     left++;
                 } else {
                     right--;
