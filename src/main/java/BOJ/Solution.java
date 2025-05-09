@@ -1,24 +1,44 @@
 package BOJ;
 
+import java.util.*;
+import java.io.*;
+
 class Solution {
-    static int answer = 0;
+    public static void main(String args[]) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T;
+        T = Integer.parseInt(br.readLine());
 
-    public int solution(int[] numbers, int target) {
+        for (int test_case = 1; test_case <= T; test_case++) {
+            int n = Integer.parseInt(br.readLine());
+            String[] players = new String[n + 1];
+            int[] preferA = new int[n + 1];
+            int[] preferB = new int[n + 1];
 
-        dfs(numbers, 0, 0, target);
-        return answer;
-    }
-
-    public static void dfs(int[] numbers, int index, int sum, int target) {
-        if (index == numbers.length) {
-            if (sum == target) {  //모든 수를 다 사용했고, 합이 타겟과 같으면 종료
-                answer += 1;
-                return;
-            } else {
-                return;
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int i = 1; i <= n; i++) {
+                preferA[i] = Integer.parseInt(br.readLine());
             }
+
+            st = new StringTokenizer(br.readLine());
+            for (int i = 1; i <= n; i++) {
+                preferB[i] = Integer.parseInt(br.readLine());
+            }
+
+            int idxA = 0;
+            int idxB = 0;
+            for (int i = 1; i <= n; i++) {
+                while (players[preferA[idxA]] != null && idxA <= n) {
+                    idxA++;
+                }
+                players[preferA[idxA]] = "A";
+
+                while (players[preferB[idxB]] != null && idxB <= n) {
+                    idxB++;
+                }
+                players[preferB[idxB]] = "B";
+            }
+
         }
-        dfs(numbers, index + 1, sum + numbers[index], target);
-        dfs(numbers, index + 1, sum - numbers[index], target);
     }
 }
