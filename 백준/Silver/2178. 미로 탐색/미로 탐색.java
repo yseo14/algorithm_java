@@ -1,68 +1,54 @@
-
-
 import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int n, m;
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {1, -1, 0, 0};
+    static int[][] graph;
 
-    static int N, M;
-    static int[][] maze;
-    static boolean[][] visited;
-    static int[] dx = {1, -1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
-
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        graph = new int[n + 1][m + 1];
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        maze = new int[N][M];
-        visited = new boolean[N][M];
-
-        for (int i = 0; i < N; i++) {
-            String line = br.readLine();
-            char[] charArray = line.toCharArray();  //  String 문자열을 char형 배열로 바꿔준다.
-            for (int j = 0; j < M; j++) {
-                maze[i][j] = Integer.parseInt(String.valueOf(charArray[j]));    //  parseInt는 인자로 문자열이 들어와야하기 때문에 charArr[j]가 바로 들어가면 안되고 문자열로 바꿔준 후 넣어야함
+        for (int i = 1; i <= n; i++) {
+            String str = br.readLine();
+            for (int j = 1; j <= m; j++) {
+                graph[i][j] = str.charAt(j - 1) - '0';
             }
         }
-
-        bfs(0, 0);
-        System.out.println(maze[N - 1][M - 1]);
+        bfs();
+        System.out.println(graph[n][m]);
     }
 
-    static void bfs(int x, int y) {
-        Queue<point> q = new LinkedList<>();
-        q.add(new point(x, y));
-        visited[x][y] = true;
-
+    public static void bfs() {
+        Queue<Point> q = new LinkedList<>();
+        boolean[][] visited = new boolean[n + 1][m + 1];
+        q.add(new Point(1, 1));
+        visited[1][1] = true;
         while (!q.isEmpty()) {
-            point start = q.poll();
+            Point curr = q.poll();
+            visited[curr.x][curr.y] = true;
             for (int i = 0; i < 4; i++) {
-                int newX = start.x + dx[i];
-                int newY = start.y + dy[i];
-
-                if (newX >= 0 && newX < N) {
-                    if (newY >= 0 && newY < M) {
-                        if (maze[newX][newY] != 0 && !visited[newX][newY]) {
-                            maze[newX][newY] = maze[start.x][start.y] + 1;
-                            q.add(new point(newX, newY));
-                            visited[newX][newY] = true;
-                        }
-                    }
+                int newX = curr.x + dx[i];
+                int newY = curr.y + dy[i];
+                if (newX < 1 || newY < 1 || newX > n || newY > m || visited[newX][newY] || graph[newX][newY] == 0) {
+                    continue;
                 }
+                q.add(new Point(newX, newY));
+                visited[newX][newY] = true;
+                graph[newX][newY] = graph[curr.x][curr.y] + 1;
             }
         }
     }
 
-    static class point {
-        int x;
-        int y;
+    public static class Point {
+        int x, y;
 
-        point(int x, int y) {
+        Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
