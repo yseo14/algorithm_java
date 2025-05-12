@@ -36,7 +36,7 @@ public class sol2178_2 {
         result = 0;
 
         bfs(0, 0);
-        System.out.println(maze[n-1][m-1]);
+        System.out.println(maze[n - 1][m - 1]);
 
     }
 
@@ -51,9 +51,9 @@ public class sol2178_2 {
                 int newX = start.x + dx[i];
                 int newY = start.y + dy[i];
 
-                if ((newX >= 0&& newX < n) && (newY >=0 && newY < m)) {
+                if ((newX >= 0 && newX < n) && (newY >= 0 && newY < m)) {
                     if (maze[newX][newY] != 0 && !visited[newX][newY]) {
-                        maze[newX][newY] = maze[start.x][start.y]+1;
+                        maze[newX][newY] = maze[start.x][start.y] + 1;
                         visited[newX][newY] = true;
                         q.add(new Point(newX, newY));
                         result++;
