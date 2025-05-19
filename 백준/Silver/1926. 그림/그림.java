@@ -1,33 +1,22 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
+
 
 public class Main {
-
+    static int n, m;
     static int[][] map;
     static boolean[][] visited;
-    static int n;
-    static int m;
     static int[] dx = {0, 0, 1, -1};
     static int[] dy = {1, -1, 0, 0};
 
-    static int maxSize;
-    static int count;
-
-
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-
         map = new int[n][m];
         visited = new boolean[n][m];
-
-
-        maxSize = 0;
-
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
@@ -35,54 +24,49 @@ public class Main {
             }
         }
 
-
+        int max = 0;
+        int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (map[i][j] == 1 && !visited[i][j]) {
-                    bfs(i, j);
+                if (!visited[i][j] && map[i][j] == 1) {
+                    max = Math.max(bfs(new Coord(i, j)), max);
                     count++;
                 }
+
             }
         }
-
         System.out.println(count);
-        System.out.println(maxSize);
-
+        System.out.println(max);
     }
 
-    public static void bfs(int x, int y) {
-        Queue<Point> q = new LinkedList<>();
-        q.add(new Point(x, y));
-
+    public static int bfs(Coord start) {
+        Queue<Coord> q = new LinkedList<>();
+        q.add(start);
+        visited[start.x][start.y] = true;
         int size = 0;
 
         while (!q.isEmpty()) {
-            Point curr = q.poll();
-            visited[curr.x][curr.y] = true;
+            Coord curr = q.poll();
             size++;
             for (int i = 0; i < 4; i++) {
-                int newX = curr.x + dx[i];
-                int newY = curr.y + dy[i];
-
-                if ((newX >= 0 && newX < n) && (newY >= 0 && newY < m)) {
-                    if (map[newX][newY] == 1 && !visited[newX][newY]) {
-                        visited[newX][newY] = true;
-                        q.add(new Point(newX, newY));
-                    }
+                int nx = curr.x + dx[i];
+                int ny = curr.y + dy[i];
+                if (nx < 0 || ny < 0 || nx >= n || ny >= m || visited[nx][ny] || map[nx][ny] == 0) {
+                    continue;
                 }
+                q.add(new Coord(nx, ny));
+                visited[nx][ny] = true;
             }
         }
-        maxSize = Math.max(size, maxSize);
+        return size;
     }
 
-    public static class Point {
-        int x;
-        int y;
+    public static class Coord {
+        int x, y;
 
-        public Point(int x, int y) {
+        public Coord(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
-
 }
