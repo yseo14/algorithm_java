@@ -2,61 +2,56 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n;
-    static int m;
-    static int[] parent;
+    static int n, m;
+    static int[][] graph;
+    static boolean[] visited;
+    static List<Integer> plan;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
         n = Integer.parseInt(br.readLine());
         m = Integer.parseInt(br.readLine());
 
-        parent = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-        }
+        graph = new int[n + 1][n + 1];
+        visited = new boolean[n + 1];
 
+        // 인접 행렬 입력
         for (int i = 1; i <= n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 1; j <= n; j++) {
-                if (Integer.parseInt(st.nextToken()) == 1) {
-                    union(i, j);
-                }
+                graph[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        List<Integer> list = new LinkedList<>();
+        // 여행 계획 입력
         StringTokenizer st = new StringTokenizer(br.readLine());
+        plan = new ArrayList<>();
         for (int i = 0; i < m; i++) {
-            list.add(Integer.parseInt(st.nextToken()));
+            plan.add(Integer.parseInt(st.nextToken()));
         }
-        for (int i = 0; i < m - 1; i++) {
-            int from = list.get(i);
-            int to = list.get(i + 1);
-            if (find(from) != find(to)) {
+
+        // 여행 계획의 첫 도시에서 DFS 시작
+        dfs(plan.get(0));
+
+        // 모든 도시가 연결되어 있었는지 확인
+        for (int city : plan) {
+            if (!visited[city]) {
                 System.out.println("NO");
                 return;
             }
         }
         System.out.println("YES");
-
     }
 
-    public static void union(int n1, int n2) {
-        int a = find(n1);
-        int b = find(n2);
+    // DFS: 현재 도시에서 연결된 도시들을 재귀적으로 탐색
+    static void dfs(int current) {
+        visited[current] = true;
 
-        if (a < b) {
-            parent[b] = a;
-        } else {
-            parent[a] = b;
+        for (int next = 1; next <= n; next++) {
+            if (graph[current][next] == 1 && !visited[next]) {
+                dfs(next);
+            }
         }
-    }
-
-    public static int find(int n) {
-        if (parent[n] == n) {
-            return parent[n];
-        }
-        return find(parent[n]);
     }
 }
