@@ -3,10 +3,8 @@ import java.util.*;
 
 public class Main {
     static int n, k;
-    static boolean[] used = new boolean[26];
-    static int max = 0;
     static String[] words;
-
+    static int ans = 0;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,48 +12,46 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
-        words = new String[n];
-        for (int i = 0; i < n; i++) {
-            words[i] = br.readLine();
-        }
-
-        used['a' - 'a'] = true;
-        used['c' - 'a'] = true;
-        used['n' - 'a'] = true;
-        used['t' - 'a'] = true;
-        used['i' - 'a'] = true;
-
         if (k < 5) {
             System.out.println(0);
-        } else if (k == 26) {
-            System.out.println(n);
-        } else {
-            dfs(0, 0);
-            System.out.println(max);
+            return;
         }
+
+        words = new String[n];
+        for (int i = 0; i < n; i++) {
+            String word = br.readLine();
+            word = word.substring(4, word.length() - 4);
+            words[i] = word.replaceAll("[acint]", "");
+        }
+        int mask = 0;
+        mask |= (1 << 'a' - 'a');
+        mask |= (1 << 'n' - 'a');
+        mask |= (1 << 't' - 'a');
+        mask |= (1 << 'i' - 'a');
+        mask |= (1 << 'c' - 'a');
+
+        comb(0, 0, mask);
+        System.out.println(ans);
     }
 
-    public static void dfs(int idx, int depth) {
-        if (depth + 5 == k) {
-            countWord();
+    public static void comb(int idx, int count, int mask) {
+        if (count == k - 5) {
+            countWord(mask);
             return;
         }
         for (int i = idx; i < 26; i++) {
-            if (used[i]) {
-                continue;
+            if ((mask & (1 << i)) == 0) {
+                comb(i + 1, count + 1, mask | (1 << i));
             }
-            used[i] = true;
-            dfs(i + 1, depth + 1);
-            used[i] = false;
         }
     }
 
-    public static void countWord() {
+    public static void countWord(int mask) {
         int count = 0;
         for (String word : words) {
             boolean readable = true;
             for (int i = 0; i < word.length(); i++) {
-                if (!used[word.charAt(i) - 'a']) {
+                if ((mask & (1 << word.charAt(i) - 'a')) == 0) {
                     readable = false;
                     break;
                 }
@@ -64,6 +60,6 @@ public class Main {
                 count++;
             }
         }
-        max = Math.max(max, count);
+        ans = Math.max(ans, count);
     }
 }
