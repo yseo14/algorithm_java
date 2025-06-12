@@ -8,13 +8,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
+
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < n; i++) {
             String option = br.readLine();
-            int sc = step1(option);
+            int sc = firstChar(option);
             if (sc == -1) {
-                sc = step2(option);
+                sc = fromLeft(option);
             }
+
             if (sc == -1) {
                 sb.append(option);
             } else {
@@ -31,30 +34,25 @@ public class Main {
         System.out.println(sb);
     }
 
-    //  단어의 첫글자
-    public static int step1(String option) {
+    public static int firstChar(String option) {
         String[] words = option.split(" ");
         int idx = 0;
         for (String word : words) {
-            char c = Character.toLowerCase(word.charAt(0));
-            if (!shortcuts.contains(c)) {
-                shortcuts.add(c);
+            char first = Character.toLowerCase(word.charAt(0));
+            if (!shortcuts.contains(first)) {
+                shortcuts.add(first);
                 return idx;
             }
-            idx += word.length()+ 1;
+            idx += word.length() + 1;
         }
         return -1;
     }
 
-    //  왼쪽에서부터 차례대로
-    public static int step2(String option) {
+    public static int fromLeft(String option) {
         for (int i = 0; i < option.length(); i++) {
-            char c = option.charAt(i);
-            if (c == ' ') {
-                continue;
-            }
-            if (!shortcuts.contains(Character.toLowerCase(c))) {
-                shortcuts.add(Character.toLowerCase(c));
+            char c = Character.toLowerCase(option.charAt(i));
+            if (!shortcuts.contains(c) && c != ' ') {
+                shortcuts.add(c);
                 return i;
             }
         }
