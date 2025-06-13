@@ -15,17 +15,22 @@ public class Main {
             arr[i] = Integer.parseInt(br.readLine());
         }
 
-        int[] dp = new int[n];
-        int max = 0;
+        // LIS 배열
+        List<Integer> lis = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
-            dp[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (arr[j] < arr[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
+            int idx = Collections.binarySearch(lis, arr[i]);
+
+            if (idx < 0) idx = -idx - 1; // 삽입 위치
+
+            if (idx == lis.size()) {
+                lis.add(arr[i]);
+            } else {
+                lis.set(idx, arr[i]);
             }
-            max = Math.max(max, dp[i]);
         }
-        System.out.println(n - max);
+
+        System.out.println(n - lis.size());
     }
 }
+
