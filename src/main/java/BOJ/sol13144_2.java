@@ -26,7 +26,7 @@ public class sol13144_2 {
                 end++;
             }
             count += end - start;
-            used[start] = false;
+            used[arr[start]] = false;
         }
 
         System.out.println(count);
