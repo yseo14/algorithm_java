@@ -3,40 +3,31 @@ import java.util.*;
 
 public class Main {
     static int n, m;
-    static int[][] graph;
-    static boolean[] visited;
-    static List<Integer> plan;
+    static int[] parent;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
         n = Integer.parseInt(br.readLine());
         m = Integer.parseInt(br.readLine());
 
-        graph = new int[n + 1][n + 1];
-        visited = new boolean[n + 1];
+        parent = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            parent[i] = i;
+        }
 
-        // 인접 행렬 입력
         for (int i = 1; i <= n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 1; j <= n; j++) {
-                graph[i][j] = Integer.parseInt(st.nextToken());
+                if (Integer.parseInt(st.nextToken()) == 1) {
+                    union(i, j);
+                }
             }
         }
 
-        // 여행 계획 입력
         StringTokenizer st = new StringTokenizer(br.readLine());
-        plan = new ArrayList<>();
-        for (int i = 0; i < m; i++) {
-            plan.add(Integer.parseInt(st.nextToken()));
-        }
-
-        // 여행 계획의 첫 도시에서 DFS 시작
-        dfs(plan.get(0));
-
-        // 모든 도시가 연결되어 있었는지 확인
-        for (int city : plan) {
-            if (!visited[city]) {
+        int top = find(Integer.parseInt(st.nextToken()));
+        for (int i = 1; i < m; i++) {
+            if (top != find(Integer.parseInt(st.nextToken()))) {
                 System.out.println("NO");
                 return;
             }
@@ -44,14 +35,20 @@ public class Main {
         System.out.println("YES");
     }
 
-    // DFS: 현재 도시에서 연결된 도시들을 재귀적으로 탐색
-    static void dfs(int current) {
-        visited[current] = true;
-
-        for (int next = 1; next <= n; next++) {
-            if (graph[current][next] == 1 && !visited[next]) {
-                dfs(next);
-            }
+    public static void union(int a, int b) {
+        int n1 = find(a);
+        int n2 = find(b);
+        if (n1 < n2) {
+            parent[n2] = n1;
+        } else {
+            parent[n1] = n2;
         }
+    }
+
+    public static int find(int n) {
+        if (parent[n] == n) {
+            return parent[n];
+        }
+        return find(parent[n]);
     }
 }
