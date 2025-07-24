@@ -34,12 +34,7 @@ public class Main {
             return;
         }
 
-        boolean[] isUsed = new boolean[10000];
         for (int i = start; i < sorted.length; i++) {
-            if (isUsed[sorted[i]]) {
-                continue;
-
-            }
             result[cnt] = sorted[i];
             dfs(sorted, i, cnt + 1);
 
