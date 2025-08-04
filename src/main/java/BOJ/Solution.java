@@ -37,7 +37,61 @@ class Solution {
         int nx2 = Math.min(x2, x4);
         int ny2 = Math.min(y2, y4);
 
-        if(nx1 > nx2 || ny1> ny2) return 0;	//	겹치는 부분이 없음
-        else return (nx2 - nx1) * (ny2 - ny1);
+        if (nx1 > nx2 || ny1 > ny2) {
+            return 0;    //	겹치는 부분이 없음
+        } else {
+            return (nx2 - nx1) * (ny2 - ny1);
+        }
+    }
+
+    public static int[] func(int[] origin) {
+        int[] result = new int[origin.length];
+        result[0] = origin[0];
+        for (int i = 1; i < origin.length; i++) {
+            result[i] = result[i - 1] + origin[i];
+        }
+        return result;
+    }
+
+    public static char mostFre(String str) {
+        int[] count = new int[26];
+        for (int i = 0; i < str.length(); i++) {
+            count[str.charAt(i) - 'a']++;
+        }
+
+        int maxCount = count[0];
+        char ans = 'a';
+
+        for (int i = 1; i < 26; i++) {
+            if (count[i] > maxCount) {
+                maxCount = count[i];
+                ans = (char) (i + 'a');
+            }
+        }
+        return ans;
+    }
+
+    public static int minFlap(String input) {
+        int count0 = 0;
+        int count1 = 0;
+        char prev = input.charAt(0);
+
+        if (prev == '0') {
+            count0++;
+        } else {
+            count1++;
+        }
+
+        for (int i = 1; i < input.length(); i++) {
+            char curr = input.charAt(i);
+            if (prev != curr) {
+                if (curr == '0') {
+                    count0++;
+                } else {
+                    count1++;
+                }
+            }
+        }
+        return Math.min(count0, count1);
     }
 }
