@@ -3,73 +3,85 @@ import java.util.*;
 
 public class Main {
     static int n, m, x;
-    static ArrayList<City>[] graph;
+    static ArrayList<Node>[] graph;
+    static ArrayList<Node>[] reversedGraph;
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        x = Integer.parseInt(st.nextToken());
+
+        n = Integer.parseInt(st.nextToken()); // 학생 수
+        m = Integer.parseInt(st.nextToken()); // 도로 수
+        x = Integer.parseInt(st.nextToken()); // 파티 위치
 
         graph = new ArrayList[n + 1];
-        for (int i = 1; i <= n; i++) {
+        reversedGraph = new ArrayList[n + 1];
+        for (int i = 0; i <= n; i++) {
             graph[i] = new ArrayList<>();
+            reversedGraph[i] = new ArrayList<>();
         }
 
-        for (int i = 1; i <= m; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
             int from = Integer.parseInt(st.nextToken());
             int to = Integer.parseInt(st.nextToken());
-            int time = Integer.parseInt(st.nextToken());
-            graph[from].add(new City(to, time));
+            int cost = Integer.parseInt(st.nextToken());
+
+            graph[from].add(new Node(to, cost));          // 정방향 그래프
+            reversedGraph[to].add(new Node(from, cost));  // 역방향 그래프
         }
 
-        int ans = Integer.MIN_VALUE;
+        // X → 모든 노드
+        int[] fromX = dijkstra(x, graph);
+        // 모든 노드 → X (역방향 그래프에서 X → 모든 노드로 해석)
+        int[] toX = dijkstra(x, reversedGraph);
+
+        int result = 0;
         for (int i = 1; i <= n; i++) {
-            int totalTime = dijkstra(i, x) + dijkstra(x, i);
-            ans = Math.max(totalTime, ans);
+            int roundTrip = toX[i] + fromX[i];
+            result = Math.max(result, roundTrip);
         }
 
-        System.out.println(ans);
+        System.out.println(result);
     }
 
-    public static int dijkstra(int from, int to) {
-        PriorityQueue<City> pq = new PriorityQueue<>();
+    public static int[] dijkstra(int start, ArrayList<Node>[] g) {
+        int[] distance = new int[n + 1];
+        Arrays.fill(distance, Integer.MAX_VALUE);
         boolean[] visited = new boolean[n + 1];
-        int[] time = new int[n + 1];
-        Arrays.fill(time, Integer.MAX_VALUE);
-        time[from] = 0;
-        pq.add(new City(from, 0));
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+
+        distance[start] = 0;
+        pq.add(new Node(start, 0));
 
         while (!pq.isEmpty()) {
-            City curr = pq.poll();
-            if (visited[curr.to]) {
-                continue;
-            }
+            Node curr = pq.poll();
+            if (visited[curr.to]) continue;
             visited[curr.to] = true;
-            for (City next : graph[curr.to]) {
-                if (time[next.to] > time[curr.to] + next.time) {
-                    time[next.to] = time[curr.to] + next.time;
-                    pq.add(new City(next.to, time[next.to]));
+
+            for (Node next : g[curr.to]) {
+                if (distance[next.to] > distance[curr.to] + next.cost) {
+                    distance[next.to] = distance[curr.to] + next.cost;
+                    pq.add(new Node(next.to, distance[next.to]));
                 }
             }
         }
-        return time[to];
+
+        return distance;
     }
 
-    public static class City implements Comparable<City> {
+    public static class Node implements Comparable<Node> {
         int to;
-        int time;
+        int cost;
 
-        public City(int to, int time) {
+        public Node(int to, int cost) {
             this.to = to;
-            this.time = time;
+            this.cost = cost;
         }
 
         @Override
-        public int compareTo(City city) {
-            return Integer.compare(this.time, city.time);
+        public int compareTo(Node other) {
+            return Integer.compare(this.cost, other.cost);
         }
     }
 }
