@@ -22,9 +22,8 @@ public class Main {
                 if (sq > i) {
                     break;
                 }
-                if (dp[i - sq] != Integer.MAX_VALUE) {
-                    dp[i] = Math.min(dp[i], dp[i - sq] + 1);
-                }
+                dp[i] = Math.min(dp[i], dp[i - sq] + 1);
+                
             }
         }
         System.out.println(dp[n]);
